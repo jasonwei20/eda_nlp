@@ -1,4 +1,4 @@
-# nlp_augmentation
+# EDA-NLP
 Easy data augmentation techniques for boosting performance on text classification tasks.
 
 We document the following data augmentation techniques:
