@@ -28,5 +28,6 @@ python code/1_data_process.py
 ```
 
 ### Train the model and evaluate it
+```
 python code/2_train_eval.py
 ```
