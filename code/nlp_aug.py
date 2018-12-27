@@ -56,6 +56,7 @@ def get_only_chars(line):
 # Replace n words in the sentence with synonyms from wordnet
 ########################################################################
 
+#for the first time you use wordnet
 #import nltk
 #nltk.download('wordnet')
 from nltk.corpus import wordnet 
@@ -189,6 +190,10 @@ def standard_augmentation(sentence, sr=3, rd=2, rs=2, ri=2, num=3):
 
 	augmented_sentences = [get_only_chars(sentence) for sentence in augmented_sentences]
 	return augmented_sentences
+
+########################################################################
+# Testing
+########################################################################
 
 if __name__ == '__main__':
 

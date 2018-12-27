@@ -1,4 +1,3 @@
-
 from keras.layers.core import Dense, Activation, Dropout
 from keras.layers.recurrent import LSTM
 from keras.layers import Bidirectional
@@ -13,7 +12,7 @@ import time
 import numpy as np
 import random
 from random import randint
-random.seed( 3 )
+random.seed(3)
 import datetime, re, operator
 from random import shuffle
 
@@ -23,6 +22,7 @@ from os import listdir
 from os.path import isfile, join, isdir
 import pickle
 
+#import data augmentation methods
 from nlp_aug import *
 
 ###################################################
@@ -70,7 +70,7 @@ def get_all_txt_paths(master_folder):
 ################ data processing ##################
 ###################################################
 
-#get the pickle file for the vocab so you don't have to load the entire dictionary
+#get the pickle file for the word2vec so you don't have to load the entire huge file each time
 def gen_vocab_dicts(folder, output_pickle_path, huge_word2vec):
 
     vocab = set()
@@ -108,22 +108,8 @@ def gen_vocab_dicts(folder, output_pickle_path, huge_word2vec):
     pickle.dump(word2vec, open(output_pickle_path, 'wb'))
     print("dictionaries outputted to", output_pickle_path)
 
-#generate more data with standard augmentation
-def gen_standard_aug(train_orig, output_file):
-	writer = open(output_file, 'w')
-	lines = open(train_orig, 'r').readlines()
-	for i, line in enumerate(lines):
-		parts = line[:-1].split('\t')
-		label = parts[0]
-		sentence = parts[1]
-		aug_sentences = standard_augmentation(sentence)
-		for aug_sentence in aug_sentences:
-			writer.write(label + "\t" + aug_sentence + '\n')
-	writer.close()
-
-
 #getting the x and y inputs in numpy array form from the text file
-def get_x_y(train_txt, word2vec_len, input_size, word2vec, percent_dataset):
+def get_x_y(train_txt, num_classes, word2vec_len, input_size, word2vec, percent_dataset):
 
 	#read in lines
 	train_lines = open(train_txt, 'r').readlines()
@@ -133,7 +119,7 @@ def get_x_y(train_txt, word2vec_len, input_size, word2vec, percent_dataset):
 
 	#initialize x and y matrix
 	x_matrix = np.zeros((num_lines, input_size, word2vec_len))
-	y_matrix = np.zeros((num_lines))
+	y_matrix = np.zeros((num_lines, num_classes))
 
 	#insert values
 	for i, line in enumerate(train_lines):
@@ -150,50 +136,49 @@ def get_x_y(train_txt, word2vec_len, input_size, word2vec, percent_dataset):
 				x_matrix[i, j, :] = word2vec[word]
 
 		#insert y
-		y_matrix[i] = label
+		y_matrix[i][label] = 1.0
 
 	return x_matrix, y_matrix
 
+###################################################
+############### data augmentation #################
+###################################################
+
+#generate more data with standard augmentation
+def gen_standard_aug(train_orig, output_file):
+    writer = open(output_file, 'w')
+    lines = open(train_orig, 'r').readlines()
+    for i, line in enumerate(lines):
+        parts = line[:-1].split('\t')
+        label = parts[0]
+        sentence = parts[1]
+        aug_sentences = standard_augmentation(sentence)
+        for aug_sentence in aug_sentences:
+            writer.write(label + "\t" + aug_sentence + '\n')
+    writer.close()
 
 ###################################################
 ##################### model #######################
 ###################################################
 
 #building the model in keras
-def build_model(sentence_length, word2vec_len):
+def build_model(sentence_length, word2vec_len, num_classes):
 	model = None
 	model = Sequential()
-	model.add(Bidirectional(LSTM(50, return_sequences=True), input_shape=(sentence_length, word2vec_len)))
+	model.add(Bidirectional(LSTM(128, return_sequences=True), input_shape=(sentence_length, word2vec_len)))
 	model.add(Dropout(0.5))
-	model.add(Bidirectional(LSTM(50, return_sequences=False)))
+	model.add(Bidirectional(LSTM(128, return_sequences=False)))
 	model.add(Dropout(0.5))
 	model.add(Dense(20, activation='relu'))
-	model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
-	model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+	model.add(Dense(num_classes, kernel_initializer='normal', activation='softmax'))
+	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 	#print(model.summary())
 	return model
 
-#confidences to binary
-def conf_to_pred(y):
-
-    if type(y) == list:
-        y_class = []
-        for pred in y:
-            if pred < 0.5:
-                y_class.append(0)
-            else:
-                y_class.append(1)
-        return y_class
-
-    else:
-        y_class = np.zeros(y.shape)
-        for i in range(y.shape[0]):
-            if y[i] < 0.5:
-                y_class[i] = 0
-            else:
-                y_class[i] = 1
-        return y_class
-
+#one hot to categorical
+def one_hot_to_categorical(y):
+    assert len(y.shape) == 2
+    return np.argmax(y, axis=1)
 
 
 

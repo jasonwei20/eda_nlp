@@ -9,6 +9,7 @@ def get_only_chars(line):
     clean_line = ""
 
     line = line.lower()
+    line = line.replace(" 's", " is") #replace hyphens with spaces
     line = line.replace("-", " ") #replace hyphens with spaces
     line = line.replace("\t", " ")
     line = line.replace("\n", " ")
