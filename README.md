@@ -19,8 +19,8 @@ First place the training file in the format `label\tsentence` in `datasets/datas
 ### Word embeddings
 Download [GloVe word embeddings](https://nlp.stanford.edu/projects/glove/) and place in a folder named `word2vec`.
 
-### The `config.py` file
-Take a look at the hyperparameters before you begin. What increments do you want? Are the file names correct?
+### The config file
+Take a look at the hyperparameters in `config.py` before you begin. What increments do you want? Are the file names correct?
 
 ### Augment the data and load the word2vec dictionary
 ```
