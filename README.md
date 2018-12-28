@@ -1,15 +1,16 @@
 # EDA-NLP
 Easy data augmentation techniques for boosting performance on text classification tasks.
 
-We document the following data augmentation techniques:
+We propose the following data augmentation techniques:
 
-1. Synonym replacement: replace *n* words with synonyms from WordNet
-2. Random deletion: randomly delete *n* random words
-3. Random swap: randomly swap two words *n* times
-4. Random insertion: randomly insert a word *n* times
-5. Sliding window: slide a window of size *w* with stride *s* over the text input
-6. Jittering: add *c* to *n* random word embeddings or take *e^c* for *n* random word embeddings
-7. Random noising: add Gaussian noise to *n* random word embeddings
+1. **Synonym replacement (SR):** Randomly choose *n* non-stop words from the sentence, and replace those words a randomly selected synonyms.
+2. **Random insertion (RI):** Retrieve *n* words that are synonyms of any non-stop word in the sentence. Randomly insert those words into the sentence.
+3. **Random swap (RS):** Randomly choose two words in the sentence and swap their positions. Do this *n* times.
+4. **Random deletion (RD):** Randomly choose *n* words from the sentence and remove them.
+
+We run a grid search over n = min(1, floor(alpha/l)), where alpha = {0.05, 0.1, 0.2, 0.3, 0.5}
+
+Also run a grid search for s augmented sentences per technique per sentence for s = {1, 2, 3, 5, 10}
 
 ## Usage
 
@@ -31,3 +32,8 @@ python code/1_data_process.py
 ```
 python code/2_train_eval.py
 ```
+
+## EDA-7?:
+5. Sliding window: slide a window of size *w* with stride *s* over the text input
+6. Jittering: add *c* to *n* random word embeddings or take *e^c* for *n* random word embeddings
+7. Random noising: add Gaussian noise to *n* random word embeddings

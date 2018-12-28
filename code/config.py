@@ -1,10 +1,10 @@
 #user inputs
 
 #dataset folder
-dataset_folder = 'datasets/trec' 
+dataset_folder = 'datasets/cr' 
 
 #number of output classes
-num_classes = 6
+num_classes = 2
 
 #number of words for input
 input_size = 50 

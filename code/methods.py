@@ -167,7 +167,7 @@ def build_model(sentence_length, word2vec_len, num_classes):
 	model = Sequential()
 	model.add(Bidirectional(LSTM(128, return_sequences=True), input_shape=(sentence_length, word2vec_len)))
 	model.add(Dropout(0.5))
-	model.add(Bidirectional(LSTM(128, return_sequences=False)))
+	model.add(Bidirectional(LSTM(32, return_sequences=False)))
 	model.add(Dropout(0.5))
 	model.add(Dense(20, activation='relu'))
 	model.add(Dense(num_classes, kernel_initializer='normal', activation='softmax'))
