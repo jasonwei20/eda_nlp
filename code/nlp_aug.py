@@ -1,8 +1,9 @@
 # Easy data augmentation techniques for text classification
 # Jason Wei, Chengyu Huang, Yifang Wei, Fei Xing, Kai Zou
-# input for all methods is a list of words
 
 import random
+from random import shuffle
+random.seed(1)
 
 #stop words list
 stop_words = ['i', 'me', 'my', 'myself', 'we', 'our', 
@@ -62,6 +63,7 @@ def get_only_chars(line):
 from nltk.corpus import wordnet 
 
 def synonym_replacement(words, n):
+	new_words = words.copy()
 	random_word_list = list(set([word for word in words if word not in stop_words]))
 	random.shuffle(random_word_list)
 	num_replaced = 0
@@ -69,14 +71,17 @@ def synonym_replacement(words, n):
 		synonyms = get_synonyms(random_word)
 		if len(synonyms) >= 1:
 			synonym = random.choice(list(synonyms))
-			words = [synonym if word == random_word else word for word in words]
+			new_words = [synonym if word == random_word else word for word in new_words]
 			#print("replaced", random_word, "with", synonym)
 			num_replaced += 1
 		if num_replaced >= n: #only replace up to n words
 			break
-	sentence = ' '.join(words)
-	words = sentence.split(' ')
-	return words
+
+	#this is stupid but we need it, trust me
+	sentence = ' '.join(new_words)
+	new_words = sentence.split(' ')
+
+	return new_words
 
 def get_synonyms(word):
 	synonyms = set()
@@ -91,40 +96,41 @@ def get_synonyms(word):
 
 ########################################################################
 # Random deletion
-# Randomly delete n words from the sentence
+# Randomly delete words from the sentence with probability p
 ########################################################################
 
-def random_deletion(words, n):
-	for _ in range(n):
-		delete_word(words)
-	return words
+def random_deletion(words, p):
 
-def delete_word(words):
-	if len(words) >= 5:
-		random_idx = random.randint(0, len(words)-1)
-		words.pop(random_idx)
+	new_words = []
+	for word in words:
+		r = random.uniform(0, 1)
+		if r > p:
+			new_words.append(word)
+
+	return new_words
 
 ########################################################################
 # Random swap
-# Randomly swap two words from the sentence n times
+# Randomly swap two words in the sentence n times
 ########################################################################
 
 def random_swap(words, n):
+	new_words = words.copy()
 	for _ in range(n):
-		words = swap_word(words)
-	return words
+		new_words = swap_word(new_words)
+	return new_words
 
-def swap_word(words):
-	random_idx_1 = random.randint(0, len(words)-1)
+def swap_word(new_words):
+	random_idx_1 = random.randint(0, len(new_words)-1)
 	random_idx_2 = random_idx_1
 	counter = 0
 	while random_idx_2 == random_idx_1:
-		random_idx_2 = random.randint(0, len(words)-1)
+		random_idx_2 = random.randint(0, len(new_words)-1)
 		counter += 1
 		if counter > 3:
-			return words
-	words[random_idx_1], words[random_idx_2] = words[random_idx_2], words[random_idx_1] 
-	return words
+			return new_words
+	new_words[random_idx_1], new_words[random_idx_2] = new_words[random_idx_2], new_words[random_idx_1] 
+	return new_words
 
 ########################################################################
 # Random addition
@@ -132,22 +138,23 @@ def swap_word(words):
 ########################################################################
 
 def random_addition(words, n):
+	new_words = words.copy()
 	for _ in range(n):
-		add_word(words)
-	return words
+		add_word(new_words)
+	return new_words
 
-def add_word(words):
+def add_word(new_words):
 	synonyms = []
 	counter = 0
 	while len(synonyms) < 1:
-		random_word = words[random.randint(0, len(words)-1)]
+		random_word = new_words[random.randint(0, len(new_words)-1)]
 		synonyms = get_synonyms(random_word)
 		counter += 1
 		if counter >= 10:
 			return
 	random_synonym = synonyms[0]
-	random_idx = random.randint(0, len(words)-1)
-	words.insert(random_idx, random_synonym)
+	random_idx = random.randint(0, len(new_words)-1)
+	new_words.insert(random_idx, random_synonym)
 
 ########################################################################
 # Sliding window
@@ -171,24 +178,51 @@ def sliding_window_sentences(words, w, s):
 # return a list of sentences (strings)
 ########################################################################
 
-def standard_augmentation(sentence, sr=3, rd=2, rs=2, ri=2, num=3):
+def eda_4(sentence, alpha_sr=3, alpha_ri=2, alpha_rs=2, p_rd=0.15, num_aug=10):
+	
 	sentence = get_only_chars(sentence)
-	augmented_sentences = [sentence]
 	words = sentence.split(' ')
-	for _ in range(num):
-		a_words = synonym_replacement(words, sr)
-		augmented_sentences.append(' '.join(a_words))
-	for _ in range(num):
-		a_words = random_deletion(words, rd)
-		augmented_sentences.append(' '.join(a_words))
-	for _ in range(num):
-		a_words = random_swap(words, rs)
-		augmented_sentences.append(' '.join(a_words))
-	for _ in range(num):
-		a_words = random_addition(words, ri)
-		augmented_sentences.append(' '.join(a_words))
+	num_words = len(words)
+	
+	augmented_sentences = []
+	num_new_per_technique = int(num_aug/4)+2
+	n_sr = min(1, alpha_sr*num_words)
+	n_ri = min(1, alpha_ri*num_words)
+	n_rs = min(1, alpha_rs*num_words)
+
+	#sr
+	for _ in range(num_new_per_technique):
+		a_words = synonym_replacement(words, n_sr)
+		augmented_sentences.append('sr' + ' '.join(a_words))
+
+	#ri
+	for _ in range(num_new_per_technique):
+		a_words = random_addition(words, n_ri)
+		augmented_sentences.append('ri' + ' '.join(a_words))
+
+	#rs
+	for _ in range(num_new_per_technique):
+		a_words = random_swap(words, n_rs)
+		augmented_sentences.append('rs' + ' '.join(a_words))
+
+	#rd
+	for _ in range(num_new_per_technique):
+		a_words = random_deletion(words, p_rd)
+		augmented_sentences.append('rd' + ' '.join(a_words))
 
 	augmented_sentences = [get_only_chars(sentence) for sentence in augmented_sentences]
+	shuffle(augmented_sentences)
+
+	#trim so that we have the desired number of augmented sentences
+	if num_aug >= 1:
+		augmented_sentences = augmented_sentences[:num_aug]
+	else:
+		keep_prob = num_aug / len(augmented_sentences)
+		augmented_sentences = [s for s in augmented_sentences if random.uniform(0, 1) > keep_prob]
+
+	#append the original sentence
+	augmented_sentences.append(sentence)
+
 	return augmented_sentences
 
 ########################################################################
@@ -198,8 +232,5 @@ def standard_augmentation(sentence, sr=3, rd=2, rs=2, ri=2, num=3):
 if __name__ == '__main__':
 
 	line = 'Hi. My name is Jason. I’m a third-year computer science major at Dartmouth College, interested in deep learning and computer vision. My advisor is Saeed Hassanpour. I’m currently working on deep learning for lung cancer classification.'
-	a_lines = standard_augmentation(line, sr=1, rd=1, rs=1, ri=1, num=1)
-	for l in a_lines:
-		print(l)
 
 

@@ -1,7 +1,7 @@
 #user inputs
 
 #dataset folder
-dataset_folder = 'datasets/cr' 
+dataset_folder = 'datasets/sst2' 
 
 #number of output classes
 num_classes = 2

@@ -37,9 +37,9 @@ if __name__ == "__main__":
 	aug_accs = []
 
 	for increment in increments:
-		orig_acc = run_model(train_orig, test_path, num_classes, increment, epochs_base=20)
+		orig_acc = run_model(train_orig, test_path, num_classes, increment, epochs_base=50)
 		orig_accs.append(orig_acc)
-		aug_acc = run_model(train_aug_st, test_path, num_classes, increment, epochs_base=2)
+		aug_acc = run_model(train_aug_st, test_path, num_classes, increment, epochs_base=5)
 		aug_accs.append(aug_acc)
 
 	#testing

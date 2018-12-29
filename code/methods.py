@@ -152,7 +152,7 @@ def gen_standard_aug(train_orig, output_file):
         parts = line[:-1].split('\t')
         label = parts[0]
         sentence = parts[1]
-        aug_sentences = standard_augmentation(sentence)
+        aug_sentences = eda_4(sentence)
         for aug_sentence in aug_sentences:
             writer.write(label + "\t" + aug_sentence + '\n')
     writer.close()
@@ -165,7 +165,7 @@ def gen_standard_aug(train_orig, output_file):
 def build_model(sentence_length, word2vec_len, num_classes):
 	model = None
 	model = Sequential()
-	model.add(Bidirectional(LSTM(128, return_sequences=True), input_shape=(sentence_length, word2vec_len)))
+	model.add(Bidirectional(LSTM(64, return_sequences=True), input_shape=(sentence_length, word2vec_len)))
 	model.add(Dropout(0.5))
 	model.add(Bidirectional(LSTM(32, return_sequences=False)))
 	model.add(Dropout(0.5))

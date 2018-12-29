@@ -25,6 +25,7 @@ def clean_files(input_files, output_file):
 	writer = open(output_file, 'w')
 
 	for input_file in input_files:
+		print(input_file)
 		input_lines = open(input_file, 'r').readlines()
 		counter = 0
 		bad_counter = 0
@@ -43,8 +44,8 @@ def clean_files(input_files, output_file):
 
 if __name__ == '__main__':
 
-	input_files = ['apex.txt', 'canon.txt', 'cl.txt', 'nikon.txt', 'nokia.txt']
-	input_files = ['raw/cr/data/' + f for f in input_files]
+	input_files = ['all.txt']#['canon_power.txt', 'canon_s1.txt', 'diaper.txt', 'hitachi.txt', 'ipod.txt', 'micromp3.txt', 'nokia6600.txt', 'norton.txt', 'router.txt']
+	input_files = ['raw/cr/data_new/' + f for f in input_files]
 	output_file = 'datasets/cr/apex_clean.txt'
 
 	clean_files(input_files, output_file)

@@ -14,20 +14,26 @@ def get_label(decimal):
 	else:
 		return -1
 
+def get_label_binary(decimal):
+	if decimal >= 0 and decimal <= 0.5:
+		return 0
+	elif decimal > 0.5 and decimal <= 1:
+		return 1
+	else:
+		return -1
+
 def get_split(split_num):
-	if split_num == 1:
+	if split_num == 1 or split_num == 3:
 		return 'train'
 	elif split_num == 2:
 		return 'test'
-	elif split_num == 3:
-		return 'dev'
 
 if __name__ == "__main__":
 
-	data_path = 'sst_1/stanfordSentimentTreebank/datasetSentences.txt'
-	labels_path = 'sst_1/stanfordSentimentTreebank/sentiment_labels.txt'
-	split_path = 'sst_1/stanfordSentimentTreebank/datasetSplit.txt'
-	dictionary_path = 'sst_1/stanfordSentimentTreebank/dictionary.txt'
+	data_path = 'raw/sst_1/stanfordSentimentTreebank/datasetSentences.txt'
+	labels_path = 'raw/sst_1/stanfordSentimentTreebank/sentiment_labels.txt'
+	split_path = 'raw/sst_1/stanfordSentimentTreebank/datasetSplit.txt'
+	dictionary_path = 'raw/sst_1/stanfordSentimentTreebank/dictionary.txt'
 
 	sentence_lines = open(data_path, 'r').readlines()
 	labels_lines = open(labels_path, 'r').readlines()
@@ -45,7 +51,7 @@ if __name__ == "__main__":
 		parts = line[:-1].split("|")
 		_id = parts[0]
 		score = float(parts[1])
-		label = get_label(score)
+		label = get_label_binary(score)
 
 		id_to_label[_id] = label
 
@@ -74,6 +80,9 @@ if __name__ == "__main__":
 
 	print(len(id_to_split), "id to split read in")
 
+	train_writer = open('datasets/sst2/train_orig.txt', 'w')
+	test_writer = open('datasets/sst2/test.txt', 'w')
+
 	#create sentence to split and label
 	for sentence_line in sentence_lines[1:]:
 		parts = sentence_line[:-1].split('\t')
@@ -81,9 +90,17 @@ if __name__ == "__main__":
 		sentence = get_only_chars(parts[1])
 		split = id_to_split[_id]
 
-		print(parts, split)
+		if parts[1] in phrase_to_label:
+			label = phrase_to_label[parts[1]]
+			print(label, sentence, split)
+			if split == 'train':
+				train_writer.write(str(label) + '\t' + sentence + '\n')
+			elif split == 'test':
+				test_writer.write(str(label) + '\t' + sentence + '\n')
 
-		label = phrase_to_label[parts[1]]
+		#print(parts, split)
+
+		#label = []
 
 
 

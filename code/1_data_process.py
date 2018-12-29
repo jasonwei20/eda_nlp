@@ -9,6 +9,6 @@ if __name__ == "__main__":
 	print("done")
 
 	#generate the vocab dictionary
-	print("generating word 2 vec")
+	print("generating word2vec")
 	gen_vocab_dicts(dataset_folder, word2vec_pickle, huge_word2vec)
 	print("done")
