@@ -15,9 +15,9 @@ def get_label(decimal):
 		return -1
 
 def get_label_binary(decimal):
-	if decimal >= 0 and decimal <= 0.5:
+	if decimal >= 0 and decimal <= 0.4:
 		return 0
-	elif decimal > 0.5 and decimal <= 1:
+	elif decimal > 0.6 and decimal <= 1:
 		return 1
 	else:
 		return -1
@@ -92,11 +92,12 @@ if __name__ == "__main__":
 
 		if parts[1] in phrase_to_label:
 			label = phrase_to_label[parts[1]]
-			print(label, sentence, split)
-			if split == 'train':
-				train_writer.write(str(label) + '\t' + sentence + '\n')
-			elif split == 'test':
-				test_writer.write(str(label) + '\t' + sentence + '\n')
+			if label in {0, 1}:
+				#print(label, sentence, split)
+				if split == 'train':
+					train_writer.write(str(label) + '\t' + sentence + '\n')
+				elif split == 'test':
+					test_writer.write(str(label) + '\t' + sentence + '\n')
 
 		#print(parts, split)
 
