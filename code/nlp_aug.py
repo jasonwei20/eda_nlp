@@ -107,6 +107,7 @@ def random_deletion(words, p):
 		if r > p:
 			new_words.append(word)
 
+	print(new_words)
 	return new_words
 
 ########################################################################
@@ -157,28 +158,10 @@ def add_word(new_words):
 	new_words.insert(random_idx, random_synonym)
 
 ########################################################################
-# Sliding window
-# Slide a window of size w over the sentence with stride s
-# Returns a list of lists of words
+# main data augmentation function
 ########################################################################
 
-def sliding_window_sentences(words, w, s):
-	windows = []
-	for i in range(0, len(words)-w+1, s):
-		window = words[i:i+w]
-		windows.append(window)
-	return windows
-
-########################################################################
-# For each sentence, generate three different sentences using each technique
-# synonym replacement: n=3
-# random deletion: n=2
-# random swap: n=2
-# random insertion: n=2
-# return a list of sentences (strings)
-########################################################################
-
-def eda_4(sentence, alpha_sr=3, alpha_ri=2, alpha_rs=2, p_rd=0.15, num_aug=10):
+def eda_4(sentence, alpha_sr=0.3, alpha_ri=0.2, alpha_rs=0.1, p_rd=0.15, num_aug=10):
 	
 	sentence = get_only_chars(sentence)
 	words = sentence.split(' ')
@@ -186,29 +169,29 @@ def eda_4(sentence, alpha_sr=3, alpha_ri=2, alpha_rs=2, p_rd=0.15, num_aug=10):
 	
 	augmented_sentences = []
 	num_new_per_technique = int(num_aug/4)+2
-	n_sr = min(1, alpha_sr*num_words)
-	n_ri = min(1, alpha_ri*num_words)
-	n_rs = min(1, alpha_rs*num_words)
+	n_sr = max(1, int(alpha_sr*num_words))
+	n_ri = max(1, int(alpha_ri*num_words))
+	n_rs = max(1, int(alpha_rs*num_words))
 
 	#sr
 	for _ in range(num_new_per_technique):
 		a_words = synonym_replacement(words, n_sr)
-		augmented_sentences.append('sr' + ' '.join(a_words))
+		augmented_sentences.append(' '.join(a_words))
 
 	#ri
 	for _ in range(num_new_per_technique):
 		a_words = random_addition(words, n_ri)
-		augmented_sentences.append('ri' + ' '.join(a_words))
+		augmented_sentences.append(' '.join(a_words))
 
 	#rs
 	for _ in range(num_new_per_technique):
 		a_words = random_swap(words, n_rs)
-		augmented_sentences.append('rs' + ' '.join(a_words))
+		augmented_sentences.append(' '.join(a_words))
 
 	#rd
 	for _ in range(num_new_per_technique):
 		a_words = random_deletion(words, p_rd)
-		augmented_sentences.append('rd' + ' '.join(a_words))
+		augmented_sentences.append(' '.join(a_words))
 
 	augmented_sentences = [get_only_chars(sentence) for sentence in augmented_sentences]
 	shuffle(augmented_sentences)
@@ -225,6 +208,49 @@ def eda_4(sentence, alpha_sr=3, alpha_ri=2, alpha_rs=2, p_rd=0.15, num_aug=10):
 
 	return augmented_sentences
 
+def SR(sentence, alpha_sr, num_aug=3):
+
+	sentence = get_only_chars(sentence)
+	words = sentence.split(' ')
+	num_words = len(words)
+
+	augmented_sentences = []
+	n_sr = max(1, int(alpha_sr*num_words))
+
+	for _ in range(num_aug):
+		a_words = synonym_replacement(words, n_sr)
+		augmented_sentences.append(' '.join(a_words))
+
+	augmented_sentences = [get_only_chars(sentence) for sentence in augmented_sentences]
+	shuffle(augmented_sentences)
+
+	augmented_sentences.append(sentence)
+
+	return augmented_sentences
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ########################################################################
 # Testing
 ########################################################################
@@ -232,5 +258,22 @@ def eda_4(sentence, alpha_sr=3, alpha_ri=2, alpha_rs=2, p_rd=0.15, num_aug=10):
 if __name__ == '__main__':
 
 	line = 'Hi. My name is Jason. I’m a third-year computer science major at Dartmouth College, interested in deep learning and computer vision. My advisor is Saeed Hassanpour. I’m currently working on deep learning for lung cancer classification.'
+
+
+
+########################################################################
+# Sliding window
+# Slide a window of size w over the sentence with stride s
+# Returns a list of lists of words
+########################################################################
+
+# def sliding_window_sentences(words, w, s):
+# 	windows = []
+# 	for i in range(0, len(words)-w+1, s):
+# 		window = words[i:i+w]
+# 		windows.append(window)
+# 	return windows
+
+
 
 

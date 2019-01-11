@@ -156,6 +156,21 @@ def gen_standard_aug(train_orig, output_file):
         for aug_sentence in aug_sentences:
             writer.write(label + "\t" + aug_sentence + '\n')
     writer.close()
+    print("finished eda for", train_orig, "to", output_file)
+
+#generate more data with only synonym replacement (SR)
+def gen_sr_aug(train_orig, output_file, alpha_sr):
+    writer = open(output_file, 'w')
+    lines = open(train_orig, 'r').readlines()
+    for i, line in enumerate(lines):
+        parts = line[:-1].split('\t')
+        label = parts[0]
+        sentence = parts[1]
+        aug_sentences = SR(sentence, alpha_sr=alpha_sr)
+        for aug_sentence in aug_sentences:
+            writer.write(label + "\t" + aug_sentence + '\n')
+    writer.close()
+    print("finished SR for", train_orig, "to", output_file, "with alpha", alpha_sr)
 
 ###################################################
 ##################### model #######################
