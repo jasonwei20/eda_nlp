@@ -36,6 +36,7 @@ Dependencies: tensorflow, keras, sklearn
 pip install tensorflow-gpu
 pip install keras
 pip install sklearn
+pip install -U nltk
 ```
 
 
