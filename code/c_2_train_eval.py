@@ -51,7 +51,10 @@ def run_cnn(train_file, test_file, num_classes, percent_dataset):
 
 if __name__ == "__main__":
 
-	for _ in range(5):
+	for see in range(5):
+
+		seed(see)
+		print('seed:', see)
 
 		writer = open('outputs_f3/' + get_now_str() + '.txt', 'w')
 
