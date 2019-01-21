@@ -1,16 +1,13 @@
 # EDA-NLP
 Easy data augmentation techniques for boosting performance on text classification tasks.
 
-We propose the following data augmentation techniques:
+We present the following data augmentation techniques:
 
-1. **Synonym replacement (SR):** Randomly choose *n* non-stop words from the sentence, and replace those words a randomly selected synonyms.
-2. **Random insertion (RI):** Retrieve *n* words that are synonyms of any non-stop word in the sentence. Randomly insert those words into the sentence.
-3. **Random swap (RS):** Randomly choose two words in the sentence and swap their positions. Do this *n* times.
-4. **Random deletion (RD):** Randomly choose *n* words from the sentence and remove them.
-
-We run a grid search over n = min(1, floor(alpha/l)), where alpha = {0.05, 0.1, 0.2, 0.3, 0.5}
-
-Also run a grid search for s augmented sentences per technique per sentence for s = {1, 2, 3, 5, 10}
+Given a sentence consisting of *l* ordered words *[w_1, w_2, ..., w_l]*, we perform the following operations:
+Synonym Replacement (SR): Randomly choose *n* words from the sentence that are not stop words. Replace each of these words with one of its synonyms chosen at random.
+Random Insertion (RI): Find a random synonym of a random word in the sentence that is not a stop word. Insert that synonym into a random position in the sentence. Do this *n* times.
+Random Swap (RS): Randomly choose two words in the sentence and swap their positions. Do this *n* times.
+Random Deletion (RD): For each word in the sentence, randomly remove it with probability *p*.
 
 ## Usage
 
@@ -20,13 +17,22 @@ First place the training file in the format `label\tsentence` in `datasets/datas
 ### Word embeddings
 Download [GloVe word embeddings](https://nlp.stanford.edu/projects/glove/) and place in a folder named `word2vec`.
 
-### The config file
-Take a look at the hyperparameters in `config.py` before you begin. What increments do you want? Are the file names correct?
-
 ### Augment the data and load the word2vec dictionary
 ```
 python code/1_data_process.py
 ```
+
+#Experiments
+
+Dependencies: tensorflow, keras, sklearn
+
+```
+pip install tensorflow-gpu
+pip install keras
+pip install sklearn
+pip install -U nltk
+```
+
 
 ### Train the model and evaluate it
 ```
