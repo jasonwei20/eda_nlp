@@ -28,6 +28,17 @@ Take a look at the hyperparameters in `config.py` before you begin. What increme
 python code/1_data_process.py
 ```
 
+#Experiments
+
+Dependencies: tensorflow, keras, sklearn
+
+```
+pip install tensorflow-gpu
+pip install keras
+pip install sklearn
+```
+
+
 ### Train the model and evaluate it
 ```
 python code/2_train_eval.py
