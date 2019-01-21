@@ -1,8 +1,16 @@
-datasets*
+
 word2vec*
-raw*
-checkpoints*
-paper*
-increment*
-sized*
+size_data*
+size_data_f1*
+size_data_f3*
+size_data_t1*
+increment_datasets_f2*
+z_archives*
+special_f4*
+outputs_f1*
+outputs_f2*
+outputs_f3*
+outputs_f4*
+baseline_cnn*
+baseline_rnn*
 

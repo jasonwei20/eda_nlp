@@ -5,4 +5,4 @@ def shuffle_lines(text_file):
 	random.shuffle(lines)
 	open(text_file, 'w').writelines(lines)
 
-shuffle_lines('increment_datasets_f2/subj/train_orig.txt')
+shuffle_lines('special_f4/pc/test_short_aug_shuffle.txt')

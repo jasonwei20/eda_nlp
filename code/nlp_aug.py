@@ -101,13 +101,22 @@ def get_synonyms(word):
 
 def random_deletion(words, p):
 
+	#obviously, if there's only one word, don't delete it
+	if len(words) == 1:
+		return words
+
+	#randomly delete words with probability p
 	new_words = []
 	for word in words:
 		r = random.uniform(0, 1)
 		if r > p:
 			new_words.append(word)
 
-	print(new_words)
+	#if you end up deleting all words, just return a random word
+	if len(new_words) == 0:
+		rand_int = random.randint(0, len(words)-1)
+		return [words[rand_int]]
+
 	return new_words
 
 ########################################################################
@@ -161,14 +170,15 @@ def add_word(new_words):
 # main data augmentation function
 ########################################################################
 
-def eda_4(sentence, alpha_sr=0.3, alpha_ri=0.2, alpha_rs=0.1, p_rd=0.15, num_aug=10):
+def eda_4(sentence, alpha_sr=0.3, alpha_ri=0.2, alpha_rs=0.1, p_rd=0.15, num_aug=9):
 	
 	sentence = get_only_chars(sentence)
 	words = sentence.split(' ')
+	words = [word for word in words if word is not '']
 	num_words = len(words)
 	
 	augmented_sentences = []
-	num_new_per_technique = int(num_aug/4)+2
+	num_new_per_technique = int(num_aug/4)+1
 	n_sr = max(1, int(alpha_sr*num_words))
 	n_ri = max(1, int(alpha_ri*num_words))
 	n_rs = max(1, int(alpha_rs*num_words))
@@ -201,14 +211,14 @@ def eda_4(sentence, alpha_sr=0.3, alpha_ri=0.2, alpha_rs=0.1, p_rd=0.15, num_aug
 		augmented_sentences = augmented_sentences[:num_aug]
 	else:
 		keep_prob = num_aug / len(augmented_sentences)
-		augmented_sentences = [s for s in augmented_sentences if random.uniform(0, 1) > keep_prob]
+		augmented_sentences = [s for s in augmented_sentences if random.uniform(0, 1) < keep_prob]
 
 	#append the original sentence
 	augmented_sentences.append(sentence)
 
 	return augmented_sentences
 
-def SR(sentence, alpha_sr, num_aug=3):
+def SR(sentence, alpha_sr, n_aug=9):
 
 	sentence = get_only_chars(sentence)
 	words = sentence.split(' ')
@@ -217,7 +227,7 @@ def SR(sentence, alpha_sr, num_aug=3):
 	augmented_sentences = []
 	n_sr = max(1, int(alpha_sr*num_words))
 
-	for _ in range(num_aug):
+	for _ in range(n_aug):
 		a_words = synonym_replacement(words, n_sr)
 		augmented_sentences.append(' '.join(a_words))
 
@@ -228,9 +238,65 @@ def SR(sentence, alpha_sr, num_aug=3):
 
 	return augmented_sentences
 
+def RI(sentence, alpha_ri, n_aug=9):
 
+	sentence = get_only_chars(sentence)
+	words = sentence.split(' ')
+	num_words = len(words)
 
+	augmented_sentences = []
+	n_ri = max(1, int(alpha_ri*num_words))
 
+	for _ in range(n_aug):
+		a_words = random_addition(words, n_ri)
+		augmented_sentences.append(' '.join(a_words))
+
+	augmented_sentences = [get_only_chars(sentence) for sentence in augmented_sentences]
+	shuffle(augmented_sentences)
+
+	augmented_sentences.append(sentence)
+
+	return augmented_sentences
+
+def RS(sentence, alpha_rs, n_aug=9):
+
+	sentence = get_only_chars(sentence)
+	words = sentence.split(' ')
+	num_words = len(words)
+
+	augmented_sentences = []
+	n_rs = max(1, int(alpha_rs*num_words))
+
+	for _ in range(n_aug):
+		a_words = random_swap(words, n_rs)
+		augmented_sentences.append(' '.join(a_words))
+
+	augmented_sentences = [get_only_chars(sentence) for sentence in augmented_sentences]
+	shuffle(augmented_sentences)
+
+	augmented_sentences.append(sentence)
+
+	return augmented_sentences
+
+def RD(sentence, alpha_rd, n_aug=9):
+
+	sentence = get_only_chars(sentence)
+	words = sentence.split(' ')
+	words = [word for word in words if word is not '']
+	num_words = len(words)
+
+	augmented_sentences = []
+
+	for _ in range(n_aug):
+		a_words = random_deletion(words, alpha_rd)
+		augmented_sentences.append(' '.join(a_words))
+
+	augmented_sentences = [get_only_chars(sentence) for sentence in augmented_sentences]
+	shuffle(augmented_sentences)
+
+	augmented_sentences.append(sentence)
+
+	return augmented_sentences
 
 
 

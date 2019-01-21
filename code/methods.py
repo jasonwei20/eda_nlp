@@ -1,8 +1,10 @@
 from keras.layers.core import Dense, Activation, Dropout
 from keras.layers.recurrent import LSTM
 from keras.layers import Bidirectional
+import keras.layers as layers
 from keras.models import Sequential
 from keras.models import load_model
+from keras.callbacks import EarlyStopping
 
 from sklearn.utils import shuffle
 from sklearn.metrics import accuracy_score
@@ -15,6 +17,8 @@ from random import randint
 random.seed(3)
 import datetime, re, operator
 from random import shuffle
+from time import gmtime, strftime
+import gc
 
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' #get rid of warnings
@@ -118,7 +122,13 @@ def get_x_y(train_txt, num_classes, word2vec_len, input_size, word2vec, percent_
 	num_lines = len(train_lines)
 
 	#initialize x and y matrix
-	x_matrix = np.zeros((num_lines, input_size, word2vec_len))
+	x_matrix = None
+	y_matrix = None
+
+	try:
+		x_matrix = np.zeros((num_lines, input_size, word2vec_len))
+	except:
+		print("Error!", num_lines, input_size, word2vec_len)
 	y_matrix = np.zeros((num_lines, num_classes))
 
 	#insert values
@@ -145,32 +155,74 @@ def get_x_y(train_txt, num_classes, word2vec_len, input_size, word2vec, percent_
 ###################################################
 
 #generate more data with standard augmentation
-def gen_standard_aug(train_orig, output_file):
+def gen_standard_aug(train_orig, output_file, num_aug=9):
     writer = open(output_file, 'w')
     lines = open(train_orig, 'r').readlines()
     for i, line in enumerate(lines):
         parts = line[:-1].split('\t')
         label = parts[0]
         sentence = parts[1]
-        aug_sentences = eda_4(sentence)
+        aug_sentences = eda_4(sentence, num_aug=num_aug)
         for aug_sentence in aug_sentences:
             writer.write(label + "\t" + aug_sentence + '\n')
     writer.close()
     print("finished eda for", train_orig, "to", output_file)
 
 #generate more data with only synonym replacement (SR)
-def gen_sr_aug(train_orig, output_file, alpha_sr):
+def gen_sr_aug(train_orig, output_file, alpha_sr, n_aug):
     writer = open(output_file, 'w')
     lines = open(train_orig, 'r').readlines()
     for i, line in enumerate(lines):
         parts = line[:-1].split('\t')
         label = parts[0]
         sentence = parts[1]
-        aug_sentences = SR(sentence, alpha_sr=alpha_sr)
+        aug_sentences = SR(sentence, alpha_sr=alpha_sr, n_aug=n_aug)
         for aug_sentence in aug_sentences:
             writer.write(label + "\t" + aug_sentence + '\n')
     writer.close()
     print("finished SR for", train_orig, "to", output_file, "with alpha", alpha_sr)
+
+#generate more data with only random insertion (RI)
+def gen_ri_aug(train_orig, output_file, alpha_ri, n_aug):
+    writer = open(output_file, 'w')
+    lines = open(train_orig, 'r').readlines()
+    for i, line in enumerate(lines):
+        parts = line[:-1].split('\t')
+        label = parts[0]
+        sentence = parts[1]
+        aug_sentences = RI(sentence, alpha_ri=alpha_ri, n_aug=n_aug)
+        for aug_sentence in aug_sentences:
+            writer.write(label + "\t" + aug_sentence + '\n')
+    writer.close()
+    print("finished RI for", train_orig, "to", output_file, "with alpha", alpha_ri)
+
+#generate more data with only random swap (RS)
+def gen_rs_aug(train_orig, output_file, alpha_rs, n_aug):
+    writer = open(output_file, 'w')
+    lines = open(train_orig, 'r').readlines()
+    for i, line in enumerate(lines):
+        parts = line[:-1].split('\t')
+        label = parts[0]
+        sentence = parts[1]
+        aug_sentences = RS(sentence, alpha_rs=alpha_rs, n_aug=n_aug)
+        for aug_sentence in aug_sentences:
+            writer.write(label + "\t" + aug_sentence + '\n')
+    writer.close()
+    print("finished RS for", train_orig, "to", output_file, "with alpha", alpha_rs)
+
+#generate more data with only random deletion (RD)
+def gen_rd_aug(train_orig, output_file, alpha_rd, n_aug):
+    writer = open(output_file, 'w')
+    lines = open(train_orig, 'r').readlines()
+    for i, line in enumerate(lines):
+        parts = line[:-1].split('\t')
+        label = parts[0]
+        sentence = parts[1]
+        aug_sentences = RD(sentence, alpha_rd=alpha_rd, n_aug=n_aug)
+        for aug_sentence in aug_sentences:
+            writer.write(label + "\t" + aug_sentence + '\n')
+    writer.close()
+    print("finished RD for", train_orig, "to", output_file, "with alpha", alpha_rd)
 
 ###################################################
 ##################### model #######################
@@ -190,11 +242,22 @@ def build_model(sentence_length, word2vec_len, num_classes):
 	#print(model.summary())
 	return model
 
+#building the cnn in keras
+def build_cnn(sentence_length, word2vec_len, num_classes):
+	model = None
+	model = Sequential()
+	model.add(layers.Conv1D(128, 5, activation='relu', input_shape=(sentence_length, word2vec_len)))
+	model.add(layers.GlobalMaxPooling1D())
+	model.add(Dense(20, activation='relu'))
+	model.add(Dense(num_classes, kernel_initializer='normal', activation='softmax'))
+	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+	return model
+
 #one hot to categorical
 def one_hot_to_categorical(y):
     assert len(y.shape) == 2
     return np.argmax(y, axis=1)
 
-
-
+def get_now_str():
+    return str(strftime("%Y-%m-%d_%H:%M:%S", gmtime()))
 
