@@ -17,7 +17,7 @@ def run_cnn(train_file, test_file, num_classes, percent_dataset):
 	test_x, test_y = get_x_y(test_file, num_classes, word2vec_len, input_size, word2vec, 1)
 
 	#implement early stopping
-	callbacks = [EarlyStopping(monitor='val_loss', patience=4)]
+	callbacks = [EarlyStopping(monitor='val_loss', patience=3)]
 
 	#train model
 	model.fit(	train_x, 

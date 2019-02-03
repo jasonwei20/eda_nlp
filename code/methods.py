@@ -154,6 +154,24 @@ def get_x_y(train_txt, num_classes, word2vec_len, input_size, word2vec, percent_
 ############### data augmentation #################
 ###################################################
 
+def gen_tsne_aug(train_orig, output_file):
+
+    writer = open(output_file, 'w')
+    lines = open(train_orig, 'r').readlines()
+    for i, line in enumerate(lines):
+    	parts = line[:-1].split('\t')
+    	label = parts[0]
+    	sentence = parts[1]
+    	writer.write(line)
+    	for alpha in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]:
+    		aug_sentence = eda_4(sentence, alpha_sr=alpha, alpha_ri=alpha, alpha_rs=alpha, p_rd=alpha, num_aug=2)[0]
+    		writer.write(label + "\t" + aug_sentence + '\n')
+    writer.close()
+    print("finished eda for tsne for", train_orig, "to", output_file)
+
+
+
+
 #generate more data with standard augmentation
 def gen_standard_aug(train_orig, output_file, num_aug=9):
     writer = open(output_file, 'w')

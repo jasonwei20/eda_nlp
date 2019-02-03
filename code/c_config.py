@@ -1,7 +1,7 @@
 #user inputs
 
 #size folders
-sizes = ['1_tiny', '2_small', '3_standard', '4_full']
+sizes = ['3_standard']#, '4_full']#['1_tiny', '2_small', '3_standard', '4_full']
 size_folders = ['size_data_f3/' + size for size in sizes]
 
 #dataset folder
