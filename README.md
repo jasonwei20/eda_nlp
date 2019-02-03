@@ -12,7 +12,7 @@ We present **EDA**: **e**asy **d**ata **a**ugmentation techniques for boosting p
 
 You can run EDA any text classification dataset in less than 5 minutes. Just two steps:
 
-## Install NLTK (if you don't have it already):
+### Install NLTK (if you don't have it already):
 
 Pip install it.
 
@@ -26,7 +26,7 @@ python
 >>> import nltk; nltk.download('wordnet')
 ```
 
-## Run EDA
+### Run EDA
 
 You can easily write your own implementation, but this one takes input files in the format `label\tsentence` (note the `\t`). So for instance, your input file should look like this (example from stanford sentiment treebank):
 
