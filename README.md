@@ -1,45 +1,57 @@
 # EDA-NLP
-This is the code for [EDA: Easy Data Augmentation techniques for boosting performance on text classification tasks.](https://arxiv.org/abs/1901.11196)
+This is the code for the paper [EDA: Easy Data Augmentation techniques for boosting performance on text classification tasks.](https://arxiv.org/abs/1901.11196)
 
-We present the following data augmentation techniques:
+We present **EDA**: **e**asy **d**ata **a**ugmentation techniques for boosting performance on text classification tasks. These are a generalized set of data augmentation techniques that are easy to implement and have shown improvements over 5 nlp classification tasks, which larger improvements on datasets of size *N<500*. While other techniques require you to train a language model on an external dataset just to get a small boost, we found that simple text editing operations using EDA result in substantial performance gains. Given a sentence of *l* ordered words *[w_1, w_2, ..., w_l]*, we perform the following operations:
 
-Given a sentence consisting of *l* ordered words *[w_1, w_2, ..., w_l]*, we perform the following operations:
-Synonym Replacement (SR): Randomly choose *n* words from the sentence that are not stop words. Replace each of these words with one of its synonyms chosen at random.
-Random Insertion (RI): Find a random synonym of a random word in the sentence that is not a stop word. Insert that synonym into a random position in the sentence. Do this *n* times.
-Random Swap (RS): Randomly choose two words in the sentence and swap their positions. Do this *n* times.
-Random Deletion (RD): For each word in the sentence, randomly remove it with probability *p*.
+- **Synonym Replacement (SR):** Randomly choose *n* words from the sentence that are not stop words. Replace each of these words with one of its synonyms chosen at random.
+- **Random Insertion (RI):** Find a random synonym of a random word in the sentence that is not a stop word. Insert that synonym into a random position in the sentence. Do this *n* times.
+- **Random Swap (RS):** Randomly choose two words in the sentence and swap their positions. Do this *n* times.
+- **Random Deletion (RD):** For each word in the sentence, randomly remove it with probability *p*.
 
-## Usage
+# Usage
 
-### Data format
-First place the training file in the format `label\tsentence` in `datasets/dataset/train_orig.txt` and the testing file in the same format in `datasets/dataset/test.txt`.
+You can run EDA any text classification dataset in less than 5 minutes. Just two steps:
 
-### Word embeddings
-Download [GloVe word embeddings](https://nlp.stanford.edu/projects/glove/) and place in a folder named `word2vec`.
+## Install NLTK (if you don't have it already):
 
-### Augment the data and load the word2vec dictionary
-```
-python code/1_data_process.py
-```
-
-#Experiments
-
-Dependencies: tensorflow, keras, sklearn
+Pip install it.
 
 ```
-pip install tensorflow-gpu
-pip install keras
-pip install sklearn
 pip install -U nltk
 ```
 
-
-### Train the model and evaluate it
+Download WordNet.
 ```
-python code/2_train_eval.py
+python
+>>> import nltk; nltk.download('wordnet')
 ```
 
-## EDA-7?:
-5. Sliding window: slide a window of size *w* with stride *s* over the text input
-6. Jittering: add *c* to *n* random word embeddings or take *e^c* for *n* random word embeddings
-7. Random noising: add Gaussian noise to *n* random word embeddings
+## Run EDA
+
+You can easily write your own implementation, but this one takes input files in the format `label\tsentence` (note the `\t`). So for instance, your input file should look like this (example from stanford sentiment treebank):
+
+```
+1   neil burger here succeeded in making the mystery of four decades back the springboard for a more immediate mystery in the present 
+0   it is a visual rorschach test and i must have failed 
+0   the only way to tolerate this insipid brutally clueless film might be with a large dose of painkillers
+...
+```
+
+Now place this input file into the `data` folder. Run 
+
+```
+python code/augment.py --input=<insert input filename>
+```
+
+The default output filename will append `eda_` to the input filename, but you can specify your own with `--output`. You can also specify the number of generated augmented sentences per original sentence using `--num_aug` (default is 9). So for example, if your input file is `sst2_train.txt` and you want to output to `sst2_augmented.txt` with 16 augmented sentences per original sentence, you would do:
+
+```
+python code/augment.py --input=sst2_train.txt --output=sst2_augmented.txt --num_aug=16
+```
+
+Best of luck!
+
+# Experiments (Coming soon)
+
+### Word embeddings
+Download [GloVe word embeddings](https://nlp.stanford.edu/projects/glove/) and place in a folder named `word2vec`.
