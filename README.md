@@ -1,5 +1,5 @@
 # EDA-NLP
-This is the code for (EDA: Easy Data Augmentation techniques for boosting performance on text classification tasks.)[https://arxiv.org/abs/1901.11196]
+This is the code for [EDA: Easy Data Augmentation techniques for boosting performance on text classification tasks.](https://arxiv.org/abs/1901.11196)
 
 We present the following data augmentation techniques:
 
