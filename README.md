@@ -10,7 +10,7 @@ We present **EDA**: **e**asy **d**ata **a**ugmentation techniques for boosting p
 - **Random Swap (RS):** Randomly choose two words in the sentence and swap their positions. Do this *n* times.
 - **Random Deletion (RD):** For each word in the sentence, randomly remove it with probability *p*.
 
-<img src="eda_figure.png" alt="drawing" width="500" class="center">
+<p align="center"> <img src="eda_figure.png" alt="drawing" width="400" class="center"> </p>
 Average performance on 5 datasets with and without EDA, with respect to percent of training data used.
 
 # Usage
