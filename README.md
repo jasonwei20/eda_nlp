@@ -1,5 +1,5 @@
 # EDA: Easy Data Augmentation Techniques for Boosting Performance on Text Classification Tasks
-This is the code for the ICLR Workshop paper [EDA: Easy Data Augmentation techniques for boosting performance on text classification tasks.](https://arxiv.org/abs/1901.11196) A blog post that explains EDA is [here](https://medium.com/@jason.20/these-are-the-easiest-data-augmentation-techniques-in-natural-language-processing-you-can-think-of-88e393fd610). 
+This is the code for the EMNLP-IJCNLP paper [EDA: Easy Data Augmentation techniques for boosting performance on text classification tasks.](https://arxiv.org/abs/1901.11196) A blog post that explains EDA is [here](https://medium.com/@jason.20/these-are-the-easiest-data-augmentation-techniques-in-natural-language-processing-you-can-think-of-88e393fd610). 
 
 By [Jason Wei](https://jasonwei20.github.io/research/) and Kai Zou, with Protago Labs AI Research.
 
