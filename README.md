@@ -3,6 +3,8 @@ This is the code for the EMNLP-IJCNLP paper [EDA: Easy Data Augmentation techniq
 
 By [Jason Wei](https://jasonwei20.github.io/research/) and Kai Zou, with Protago Labs AI Research.
 
+Note: **Do not** email me with questions, as I will not reply. Please open an issue.
+
 We present **EDA**: **e**asy **d**ata **a**ugmentation techniques for boosting performance on text classification tasks. These are a generalized set of data augmentation techniques that are easy to implement and have shown improvements on five NLP classification tasks, with substantial improvements on datasets of size *N<500*. While other techniques require you to train a language model on an external dataset just to get a small boost, we found that simple text editing operations using EDA result in substantial performance gains. Given a sentence in the training set, we perform the following operations:
 
 - **Synonym Replacement (SR):** Randomly choose *n* words from the sentence that are not stop words. Replace each of these words with one of its synonyms chosen at random.
