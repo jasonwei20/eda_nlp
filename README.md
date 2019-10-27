@@ -70,16 +70,12 @@ If you use EDA in your paper, please cite us:
   volume    = {abs/1901.11196},
   year      = {2019},
   url       = {http://arxiv.org/abs/1901.11196},
-  archivePrefix = {arXiv},
-  eprint    = {1901.11196},
-  timestamp = {Mon, 04 Feb 2019 08:11:03 +0100},
-  biburl    = {https://dblp.org/rec/bib/journals/corr/abs-1901-11196},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 
-# Experiments (Coming soon)
+# Experiments
 
-They are not documented, but all the code is here and you may run them.
+The code is not documented, but is [here](https://github.com/jasonwei20/eda_nlp/tree/master/experiments) for all experiments used in the paper. See [this issue](https://github.com/jasonwei20/eda_nlp/issues/10) for limited guidance.
+
 
 
