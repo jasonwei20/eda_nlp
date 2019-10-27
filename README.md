@@ -58,7 +58,28 @@ python code/augment.py --input=sst2_train.txt --output=sst2_augmented.txt --num_
 
 Note that at least one augmentation operation is applied per augmented sentence regardless of alpha. So if you do alpha=0.001 and your sentence only has four words, one augmentation operation will still be performed. Best of luck!
 
+# Citation
+If you use EDA in your paper, please cite us:
+```
+@article{DBLP:journals/corr/abs-1901-11196,
+  author    = {Jason W. Wei and
+               Kai Zou},
+  title     = {{EDA:} Easy Data Augmentation Techniques for Boosting Performance
+               on Text Classification Tasks},
+  journal   = {CoRR},
+  volume    = {abs/1901.11196},
+  year      = {2019},
+  url       = {http://arxiv.org/abs/1901.11196},
+  archivePrefix = {arXiv},
+  eprint    = {1901.11196},
+  timestamp = {Mon, 04 Feb 2019 08:11:03 +0100},
+  biburl    = {https://dblp.org/rec/bib/journals/corr/abs-1901-11196},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+```
+
 # Experiments (Coming soon)
 
-### Word embeddings
-Download [GloVe word embeddings](https://nlp.stanford.edu/projects/glove/) and place in a folder named `word2vec`.
+They are not documented, but all the code is here and you may run them.
+
+
