@@ -56,7 +56,7 @@ The default output filename will append `eda_` to the front of the input filenam
 python code/augment.py --input=sst2_train.txt --output=sst2_augmented.txt --num_aug=16 --alpha=0.05
 ```
 
-Note that at least one augmentation operation is applied per augmented sentence regardless of alpha. So if you do alpha=0.001 and your sentence only has four words, one augmentation operation will still be performed. Best of luck!
+Note that at least one augmentation operation is applied per augmented sentence regardless of alpha. So if you do `alpha=0.001` and your sentence only has four words, one augmentation operation will still be performed. Best of luck!
 
 # Citation
 If you use EDA in your paper, please cite us:
