@@ -23,12 +23,12 @@ You can run EDA any text classification dataset in less than 5 minutes. Just two
 
 Pip install it.
 
-```
+```bash
 pip install -U nltk
 ```
 
 Download WordNet.
-```
+```bash
 python
 >>> import nltk; nltk.download('wordnet')
 ```
@@ -46,13 +46,13 @@ You can easily write your own implementation, but this one takes input files in 
 
 Now place this input file into the `data` folder. Run 
 
-```
+```bash
 python code/augment.py --input=<insert input filename>
 ```
 
 The default output filename will append `eda_` to the front of the input filename, but you can specify your own with `--output`. You can also specify the number of generated augmented sentences per original sentence using `--num_aug` (default is 9). Furthermore, you can specify the alpha parameter, which approximately means the percent of words in the sentence that will be changed (default is `0.1` or `10%`). So for example, if your input file is `sst2_train.txt` and you want to output to `sst2_augmented.txt` with `16` augmented sentences per original sentence and `alpha=0.05`, you would do:
 
-```
+```bash
 python code/augment.py --input=sst2_train.txt --output=sst2_augmented.txt --num_aug=16 --alpha=0.05
 ```
 
