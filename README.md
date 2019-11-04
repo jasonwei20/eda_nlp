@@ -61,15 +61,18 @@ Note that at least one augmentation operation is applied per augmented sentence 
 # Citation
 If you use EDA in your paper, please cite us:
 ```
-@article{DBLP:journals/corr/abs-1901-11196,
-  author    = {Jason W. Wei and
-               Kai Zou},
-  title     = {{EDA:} Easy Data Augmentation Techniques for Boosting Performance
-               on Text Classification Tasks},
-  journal   = {CoRR},
-  volume    = {abs/1901.11196},
-  year      = {2019},
-  url       = {http://arxiv.org/abs/1901.11196},
+@inproceedings{wei-zou-2019-eda,
+    title = "{EDA}: Easy Data Augmentation Techniques for Boosting Performance on Text Classification Tasks",
+    author = "Wei, Jason  and
+      Zou, Kai",
+    booktitle = "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)",
+    month = nov,
+    year = "2019",
+    address = "Hong Kong, China",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/D19-1670",
+    pages = "6383--6389",
+    abstract = "We present EDA: easy data augmentation techniques for boosting performance on text classification tasks. EDA consists of four simple but powerful operations: synonym replacement, random insertion, random swap, and random deletion. On five text classification tasks, we show that EDA improves performance for both convolutional and recurrent neural networks. EDA demonstrates particularly strong results for smaller datasets; on average, across five datasets, training with EDA while using only 50{\textbackslash}{\%} of the available training set achieved the same accuracy as normal training with all available data. We also performed extensive ablation studies and suggest parameters for practical use.",
 }
 ```
 
