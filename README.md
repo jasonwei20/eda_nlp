@@ -5,6 +5,8 @@ This is the code for the EMNLP-IJCNLP paper [EDA: Easy Data Augmentation techniq
 
 A blog post that explains EDA is [[here]](https://medium.com/@jason.20/these-are-the-easiest-data-augmentation-techniques-in-natural-language-processing-you-can-think-of-88e393fd610). 
 
+Update: find an external implementation of EDA in Chinese [[here]](https://github.com/zhanlaoban/EDA_NLP_for_Chinese).
+
 By [Jason Wei](https://jasonwei20.github.io/research/) and Kai Zou.
 
 Note: **Do not** email me with questions, as I will not reply. Instead, open an issue.
@@ -76,7 +78,6 @@ If you use EDA in your paper, please cite us:
     publisher = "Association for Computational Linguistics",
     url = "https://www.aclweb.org/anthology/D19-1670",
     pages = "6383--6389",
-    abstract = "We present EDA: easy data augmentation techniques for boosting performance on text classification tasks. EDA consists of four simple but powerful operations: synonym replacement, random insertion, random swap, and random deletion. On five text classification tasks, we show that EDA improves performance for both convolutional and recurrent neural networks. EDA demonstrates particularly strong results for smaller datasets; on average, across five datasets, training with EDA while using only 50{\textbackslash}{\%} of the available training set achieved the same accuracy as normal training with all available data. We also performed extensive ablation studies and suggest parameters for practical use.",
 }
 ```
 
