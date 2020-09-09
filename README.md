@@ -56,13 +56,13 @@ Now place this input file into the `data` folder. Run
 python code/augment.py --input=<insert input filename>
 ```
 
-The default output filename will append `eda_` to the front of the input filename, but you can specify your own with `--output`. You can also specify the number of generated augmented sentences per original sentence using `--num_aug` (default is 9). Furthermore, you can specify the alpha parameter, which approximately means the percent of words in the sentence that will be changed (default is `0.1` or `10%`). So for example, if your input file is `sst2_train.txt` and you want to output to `sst2_augmented.txt` with `16` augmented sentences per original sentence and `alpha=0.05`, you would do:
+The default output filename will append `eda_` to the front of the input filename, but you can specify your own with `--output`. You can also specify the number of generated augmented sentences per original sentence using `--num_aug` (default is 9). Furthermore, you can specify different alpha parameters, which approximately means the percent of words in the sentence that will be changed according to that rule (default is `0.1` or `10%`). So for example, if your input file is `sst2_train.txt` and you want to output to `sst2_augmented.txt` with `16` augmented sentences per original sentence and replace 5% of words by synonyms (`alpha_sr=0.05`), delete 10% of words (`alpha_rd=0.1`, or leave as the default) and do not apply random insertion (`alpha_ri=0.0`) and random swap (`alpha_rs=0.0`), you would do:
 
 ```bash
-python code/augment.py --input=sst2_train.txt --output=sst2_augmented.txt --num_aug=16 --alpha=0.05
+python code/augment.py --input=sst2_train.txt --output=sst2_augmented.txt --num_aug=16 --alpha_sr=0.05 --alpha_rd=0.1 --alpha_ri=0.0 --alpha_rs=0.0
 ```
 
-Note that at least one augmentation operation is applied per augmented sentence regardless of alpha. So if you do `alpha=0.001` and your sentence only has four words, one augmentation operation will still be performed. Best of luck!
+Note that at least one augmentation operation is applied per augmented sentence regardless of alpha (if greater than zero). So if you do `alpha_sr=0.001` and your sentence only has four words, one augmentation operation will still be performed. Of course, if one particular alpha is zero, nothing will be done. Best of luck!
 
 # Citation
 If you use EDA in your paper, please cite us:
