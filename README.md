@@ -1,6 +1,8 @@
 # EDA: Easy Data Augmentation Techniques for Boosting Performance on Text Classification Tasks
 [![Conference](http://img.shields.io/badge/EMNLP-2019-4b44ce.svg)](https://arxiv.org/abs/1901.11196)
 
+For a survey of data augmentation in NLP, see this [repository](https://github.com/styfeng/DataAug4NLP/blob/main/README.md)/this [paper](http://arxiv.org/abs/2105.03075).
+
 This is the code for the EMNLP-IJCNLP paper [EDA: Easy Data Augmentation techniques for boosting performance on text classification tasks.](https://arxiv.org/abs/1901.11196) 
 
 A blog post that explains EDA is [[here]](https://medium.com/@jason.20/these-are-the-easiest-data-augmentation-techniques-in-natural-language-processing-you-can-think-of-88e393fd610). 
