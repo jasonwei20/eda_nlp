@@ -64,7 +64,7 @@ from nltk.corpus import wordnet
 
 def synonym_replacement(words, n):
 	new_words = words.copy()
-	random_word_list = list(set([word for word in words if word not in stop_words]))
+	random_word_list = sorted(set([word for word in words if word not in stop_words]))
 	random.shuffle(random_word_list)
 	num_replaced = 0
 	for random_word in random_word_list:
@@ -92,7 +92,7 @@ def get_synonyms(word):
 			synonyms.add(synonym) 
 	if word in synonyms:
 		synonyms.remove(word)
-	return list(synonyms)
+	return sorted(synonyms)
 
 ########################################################################
 # Random deletion
