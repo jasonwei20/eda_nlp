@@ -92,7 +92,7 @@ def get_synonyms(word):
 			synonyms.add(synonym) 
 	if word in synonyms:
 		synonyms.remove(word)
-	return sorted(synonyms)
+	return random.shuffle(sorted(synonyms))
 
 ########################################################################
 # Random deletion
